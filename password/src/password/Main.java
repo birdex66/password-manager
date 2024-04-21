@@ -33,12 +33,38 @@ public class Main {
         
         // Loop for account creation or login
         while(!access) {
-            System.out.printf("Press Y for a new account\nPress N to log in\n");
+            System.out.printf("Press Y for a new account\nPress N to log in\nPress T to launch test cases\n");
             String choice = scan.next();
             if(choice.equals("Y")) {
                 createAccount();
             }else if(choice.equals("N")) {
                 access = login();
+            }else if(choice.equals("T")) {
+            	 try {
+                     PassCreatorInterface passCreator = new passCreator("temp.dat");
+                     
+                     passCreator.addAccount("user1", "password1");
+                     passCreator.addAccount("user2", "password2");
+                     
+                     System.out.printf("Sample data:\n");
+                     
+                     passCreator.printAllAccounts();
+                     
+                     passNew foundAccount = passCreator.getAccountByName("user1", "password1");
+                     if (foundAccount != null) {
+                         System.out.println("Found Account: " + foundAccount.getUsername());
+                     } else {
+                         System.out.println("Account not found.");
+                     }
+                     
+                     passCreator.remove(foundAccount);
+                     
+                     passCreator.printAllAccounts();
+                     clearFile("temp.dat");
+                     System.exit(0);
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
             }else {
                 System.out.println("Invalid choice. Please try again.");
             }
@@ -105,7 +131,7 @@ public class Main {
                     clearFile(outName);
                     System.out.printf("\nExiting...\n");
                 }else {
-                    System.exit(0);
+                    System.exit(1);
                 }
             }
         }
@@ -301,7 +327,7 @@ public class Main {
         }catch(Exception error) {
             System.out.println("Error while decrypting file.Exiting...\n" + error.getMessage());
             error.printStackTrace();
-            System.exit(1);
+            System.exit(2);
         }
     }
      
