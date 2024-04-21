@@ -219,7 +219,12 @@ public class Main {
         
         if(fileExists(encryptedFileName)) {
             System.out.println("Username taken, please use a new name");
-        }else{
+        }else if (password.length() > 16){
+        	while(password.length() > 16){
+        		System.out.print("Password length is longer than 16 characters.\nEnter a new password:\n");
+        		password = scan.next();
+        	}
+        }else {
             naurnaur.setUsername(name);
             naurnaur.setPassword(password);
             createUserFile(encryptFileName(password,name));
